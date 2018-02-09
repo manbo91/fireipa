@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "description": "Using latest JavaScript features on the server",
   "repository": {
-    "type": "git"
+    "type": "git",
+    "url": "https://github.com/manbo91/fireipa.git"
   },
   "author": "KIM SEUNG YEON",
   "license": "MIT",
@@ -103,9 +104,9 @@
     "testEnvironment": "node"
   },
   "bugs": {
-    "url": "https://github.com/vmasto/express-babel/issues"
+    "url": "https://github.com/manbo91/fireipa/issues"
   },
-  "homepage": "https://github.com/vmasto/express-babel#readme",
+  "homepage": "https://github.com/manbo91/fireipa#readme",
   "directories": {
     "test": "test"
   }
