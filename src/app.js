@@ -2,7 +2,7 @@ import express from 'express';
 // import path from 'path';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
-import cors from "cors";
+// import cors from "cors";
 
 // routes
 import index from "./routes/index";
@@ -14,15 +14,15 @@ app.disable('x-powered-by');
 // View engine setup
 // app.set('views', path.join(__dirname, '../views'));
 
-const corsOptions = {
-  origin: 'http://localhost:3000',
-  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-  optionsSuccessStatus: 200
-};
+// const corsOptions = {
+//   origin: 'http://localhost:3000',
+//   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+//   allowedHeaders: ['Content-Type', 'Authorization'],
+//   credentials: true,
+//   optionsSuccessStatus: 200
+// };
 
-app(cors(corsOptions));
+// app(cors(corsOptions));
 app.use(logger('dev', {
   skip: () => app.get('env') === 'test'
 }));

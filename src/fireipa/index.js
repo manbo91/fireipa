@@ -1,8 +1,8 @@
 import admin from "./setup";
 import models from "./models";
 
-export const db = admin.firestore();
-export const auth = admin.auth();
+const db = admin.firestore();
+const auth = admin.auth();
 
 export default {
   admin,
