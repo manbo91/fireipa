@@ -1,8 +1,8 @@
 import fireipa from "../fireipa";
 
-const branchRef = fireipa.db.collection("branch");
+const rootRef = fireipa.db.collection("branch");
 
-const branchModel = new fireipa.models.FireStoreTimestampModel(branchRef, {
+const branchModel = new fireipa.models.FireStoreTimestampModel(rootRef, {
   name: "stringValue",
   phone: "stringValue",
   address: "stringValue",

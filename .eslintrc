@@ -21,6 +21,7 @@
         "function-paren-newline" : 0,
         "import/no-unresolved": 0,
         "no-restricted-syntax": 0,
-        "valid-typeof": 0
+        "valid-typeof": 0,
+        "no-console": 0
     }
 }

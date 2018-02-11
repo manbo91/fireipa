@@ -17,12 +17,16 @@ const companyModel = new fireipa.models.FireStoreModel(rootRef, {
 //   });
 // };
 
-const companyLogModel = docId => (
-  new fireipa.models.FireStoreDeepModel(rootRef, docId, "log/asdasdnkjasd/asdad", {
-    name: "stringValue",
-    phone: "stringValue",
-    address: "stringValue"
-  })
-);
+const companyLogModel = docId =>
+  new fireipa.models.FireStoreDeepModel(
+    rootRef,
+    docId,
+    "log/asdasdnkjasd/asdad",
+    {
+      name: "stringValue",
+      phone: "stringValue",
+      address: "stringValue"
+    }
+  );
 
 export default { companyModel, companyLogModel };
