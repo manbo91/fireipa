@@ -1,15 +1,14 @@
-import { Router } from 'express';
-import models from '../models';
+import { Router } from "express";
+import models from "../models";
 
 const router = Router();
-
 
 /**
  * GET home page
  */
 
-router.get("/", async (req, res) => {
-  const data = await models.branch.get("mZyYSkmsWxQwTRoYklnl");
+router.get("/:docId", async (req, res) => {
+  const data = await models.branch.branchModel.get(req.params.docId);
   if (!data) {
     res.sendStatus(404);
   } else {
@@ -23,6 +22,15 @@ router.get("/all", async (req, res) => {
     res.sendStatus(404);
   } else {
     res.status(200).send(data);
+  }
+});
+
+router.delete("/", async (req, res) => {
+  const docId = await models.branch.branchModel.delete("18ewciJR6FutvBu");
+  if (!docId) {
+    res.sendStatus(404);
+  } else {
+    res.status(200).send(docId);
   }
 });
 

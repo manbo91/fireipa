@@ -1,3 +1,5 @@
+import fireipa from "./index";
+
 /*
   --- Type ---
   nullValue: null
@@ -69,7 +71,7 @@ class FireStoreModel {
             nullLength += 1;
 
             console.warn(`The "${typeName}" type is undefined.`);
-          // Type mismatch
+            // Type mismatch
           } else if (!isType) {
             // Check data
             if (data[typeName]) {
@@ -98,6 +100,9 @@ class FireStoreModel {
   create(docId, data) {
     return new Promise(async resolve => {
       const result = await this.checkDocTypeData(data);
+      if (this.createdAt) {
+        result.createdAt = fireipa.admin.firestore.FieldValue.serverTimestamp();
+      }
       if (result) {
         this.collectionRef
           .doc(docId)
@@ -113,9 +118,32 @@ class FireStoreModel {
     }).then(createdData => createdData);
   }
 
+  add(data) {
+    return new Promise(async resolve => {
+      const result = await this.checkDocTypeData(data);
+      if (this.createdAt) {
+        result.createdAt = fireipa.admin.firestore.FieldValue.serverTimestamp();
+      }
+      if (result) {
+        this.collectionRef
+          .add(result)
+          .then(docRef => {
+            resolve(docRef.id);
+          })
+          .catch(err => resolve(err));
+      } else {
+        resolve(false);
+        console.error("Failed to add data");
+      }
+    }).then(addedData => addedData);
+  }
+
   update(docId, data) {
     return new Promise(async resolve => {
       const result = await this.checkDocTypeData(data);
+      if (this.updatedAt) {
+        result.updatedAt = fireipa.admin.firestore.FieldValue.serverTimestamp();
+      }
       if (result) {
         this.collectionRef
           .doc(docId)
@@ -131,27 +159,25 @@ class FireStoreModel {
     });
   }
 
-  add(data) {
-    return new Promise(async resolve => {
-      const result = await this.checkDocTypeData(data);
-      if (result) {
-        this.collectionRef
-          .add(result)
-          .then(docRef => {
-            resolve(docRef.id);
-          })
-          .catch(err => resolve(err));
-      } else {
-        resolve(false);
-        console.error("Failed to add data");
-      }
-    }).then(addedData => addedData);
-  }
-
-  get(uid) {
+  delete(docId) {
     return new Promise(resolve => {
       this.collectionRef
-        .doc(uid)
+        .doc(docId)
+        .delete()
+        .then(() => {
+          resolve(docId);
+        })
+        .catch(err => {
+          resolve(false);
+          console.err("Failed to delete data", err);
+        });
+    }).then(data => data);
+  }
+
+  get(docId) {
+    return new Promise(resolve => {
+      this.collectionRef
+        .doc(docId)
         .get()
         .then(async doc => {
           const data = doc.data();
@@ -196,9 +222,11 @@ class FireStoreDeepModel extends FireStoreModel {
 }
 
 class FireStoreTimestampModel extends FireStoreModel {
-  constructor() {
-    super();
-    this.currentTime = new Date();
+  constructor(collectionRef, documentType) {
+    super(collectionRef, documentType);
+
+    this.createdAt = true;
+    this.updatedAt = true;
   }
 }
 
