@@ -67,10 +67,12 @@ class FireStoreModel {
           }
           // No data
           if (typeof data[typeName] === "undefined") {
-            checkDocTypeData[typeName] = null;
-            nullLength += 1;
+            if (typeName !== "createdAt" && typeName !== "updatedAt") {
+              checkDocTypeData[typeName] = null;
+              nullLength += 1;
 
-            console.warn(`The "${typeName}" type is undefined.`);
+              console.warn(`The "${typeName}" type is undefined.`);
+            }
             // Type mismatch
           } else if (!isType) {
             // Check data
@@ -206,6 +208,34 @@ class FireStoreModel {
         .catch(err => {
           resolve(false);
           console.error("Failed to get all data", err);
+        });
+    }).then(data => data);
+  }
+
+  getFilter(query) {
+    const filters = Object.keys(query).map(fieldName => [
+      fieldName,
+      "==",
+      query[fieldName]
+    ]);
+
+    let filterRef = this.collectionRef;
+    filters.forEach(filter => {
+      filterRef = filterRef.where(...filter);
+    });
+    return new Promise(resolve => {
+      filterRef
+        .get()
+        .then(snapshot => {
+          const data = [];
+          snapshot.forEach(doc => {
+            data.push({ ...doc.data(), id: doc.id });
+          });
+          resolve(data);
+        })
+        .catch(err => {
+          resolve(false);
+          console.error("Failed to get filter data", err);
         });
     }).then(data => data);
   }
