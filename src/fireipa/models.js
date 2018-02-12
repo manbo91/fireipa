@@ -213,10 +213,10 @@ class FireStoreModel {
   }
 
   getFilter(query) {
-    const filters = Object.keys(query).map(fieldName => [
-      fieldName,
+    const filters = Object.keys(query).map(field => [
+      field,
       "==",
-      query[fieldName]
+      query[field]
     ]);
 
     let filterRef = this.collectionRef;
@@ -238,6 +238,37 @@ class FireStoreModel {
           console.error("Failed to get filter data", err);
         });
     }).then(data => data);
+  }
+
+  async getPage({ field, offset, limit }) {
+    let next;
+    if (offset && Number(offset) > 0) {
+      const startAt = this.collectionRef.orderBy(field).limit(Number(offset));
+      const paginate = await startAt.get();
+      const last = paginate.docs[paginate.docs.length - 1];
+      next = this.collectionRef
+        .orderBy(field)
+        .startAfter(last.data()[field])
+        .limit(Number(limit));
+    } else {
+      next = this.collectionRef.orderBy(field).limit(Number(limit));
+    }
+
+    return new Promise(resolve => {
+      next
+        .get()
+        .then(snapshot => {
+          const data = [];
+          snapshot.forEach(doc => {
+            data.push({ ...doc.data(), id: doc.id });
+          });
+          resolve(data);
+        })
+        .catch(err => {
+          resolve(false);
+          console.error("Failed to get page data", err);
+        });
+    });
   }
 }
 

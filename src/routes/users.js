@@ -13,7 +13,12 @@ router
     let data;
 
     if (req.query) {
-      data = await models.branch.branchModel.getFilter(req.query);
+      const { field, offset, limit } = req.query;
+      if ((field && limit) || offset) {
+        data = await models.branch.branchModel.getPage(req.query);
+      } else {
+        data = await models.branch.branchModel.getFilter(req.query);
+      }
     } else {
       data = await models.branch.branchModel.getAll();
     }
