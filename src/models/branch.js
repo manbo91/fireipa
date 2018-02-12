@@ -6,7 +6,6 @@ const branchModel = new fireipa.models.FireStoreTimestampModel(rootRef, {
   name: "stringValue",
   phone: "stringValue",
   address: "stringValue",
-  asdasd: "stringValue",
   createdAt: "timestampValue",
   updatedAt: "timestampValue"
 });

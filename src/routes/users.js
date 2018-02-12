@@ -39,6 +39,20 @@ router
     }
   });
 
+router.get("/search", async (req, res) => {
+  if (req.query) {
+    const data = await models.branch.branchModel.getSearch(req.query);
+
+    if (!data) {
+      res.sendStatus(404);
+    } else {
+      res.status(200).send(data);
+    }
+  } else {
+    res.sendStatus(400);
+  }
+});
+
 router
   .route("/:docId")
   .get(async (req, res) => {

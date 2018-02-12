@@ -216,6 +216,34 @@ class FireStoreModel {
     const filters = Object.keys(query).map(field => [
       field,
       "==",
+      query[field] === "null" ? null : query[field]
+    ]);
+
+    let filterRef = this.collectionRef;
+    filters.forEach(filter => {
+      filterRef = filterRef.where(...filter);
+    });
+    return new Promise(resolve => {
+      filterRef
+        .get()
+        .then(snapshot => {
+          const data = [];
+          snapshot.forEach(doc => {
+            data.push({ ...doc.data(), id: doc.id });
+          });
+          resolve(data);
+        })
+        .catch(err => {
+          resolve(false);
+          console.error("Failed to get filter data", err);
+        });
+    }).then(data => data);
+  }
+
+  getSearch(query) {
+    const filters = Object.keys(query).map(field => [
+      field,
+      ">=",
       query[field]
     ]);
 
