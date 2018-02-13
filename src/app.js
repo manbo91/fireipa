@@ -6,7 +6,7 @@ import cors from "cors";
 
 // routes
 import index from "./routes/index";
-import users from "./routes/users";
+import branches from "./routes/branches";
 
 const app = express();
 app.disable("x-powered-by");
@@ -34,7 +34,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Routes
 app.use("/", index);
-app.use("/users", users);
+app.use("/branches", branches);
 
 // Catch 404 and forward to error handler
 // app.use((req, res, next) => {
