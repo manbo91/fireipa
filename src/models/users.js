@@ -1,10 +1,10 @@
 import fireipa from "../fireipa";
 
-const rootRef = fireipa.db.collection("usersTest");
+const rootRef = fireipa.db.collection("users");
 
-const usersModel = new fireipa.models.FireStoreModel(rootRef, {
+const userModel = new fireipa.models.FireStoreModel(rootRef, {
   displayName: "stringValue",
   email: "stringValue",
 });
 
-export default { usersModel };
+export default { userModel };
