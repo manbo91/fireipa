@@ -1,7 +1,5 @@
-import company from "./company";
-import branch from "./branch";
+import users from "./users";
 
 export default {
-  company,
-  branch
+  users
 };

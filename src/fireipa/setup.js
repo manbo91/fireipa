@@ -5,4 +5,6 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
 
+export const adminId = "";
+
 export default admin;

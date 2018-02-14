@@ -1,4 +1,4 @@
-import admin from "./setup";
+import admin, { adminId } from "./setup";
 import models from "./models";
 
 const db = admin.firestore();
@@ -8,5 +8,6 @@ export default {
   admin,
   db,
   auth,
-  models
+  models,
+  adminId
 };
