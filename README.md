@@ -153,23 +153,23 @@ export default router;
 
  - http://localhost:8080/coupons/
 	> **GET:** coupons 컬렉션의 모든 문서를 가져옵니다.
-	**POST:** 랜덤 ID를 생성하여 문서를 저장합니다.
+	> **POST:** 랜덤 ID를 생성하여 문서를 저장합니다.
 
  - http://localhost:8080/coupons?name=test&persent=10
 	> **GET:** name이 test이고 persent가 10인 쿠폰 문서를 가져옵니다.
 
  - http://localhost:8080/coupons?field=name&offset=20&limit=50
 	> **GET:** 필드기준 name으로 21번째 문서부터 50개의 문서를 가져옵니다.
-	offset을 지정하지 않으면 1번째 문서부터 가져옵니다.
+	> offset을 지정하지 않으면 1번째 문서부터 가져옵니다.
  
  - http://localhost:8080/coupons/search?name=goo
 	 > **GET**: name안에 goo가 들어간 쿠폰 문서를 가져옵니다.
 
  - http://localhost:8080/coupons/:docId
 	> **GET**: id 값이 docId인 문서를 가져옵니다.
-	**POST**: docId를 지정하여 문서를 생성합니다. 기존에 있는 아이디라면 데이터를 덮어씌웁니다.
-	**PUT**: id 값이 docId인 문서를 업데이트 합니다.
-	**DELETE**: id 값이 docId인 문서를 삭제합니다.
+	> **POST**: docId를 지정하여 문서를 생성합니다. 기존에 있는 아이디라면 데이터를 덮어씌웁니다.
+	> **PUT**: id 값이 docId인 문서를 업데이트 합니다.
+	> **DELETE**: id 값이 docId인 문서를 삭제합니다.
 
 ## 모델 메서드
 
@@ -213,4 +213,60 @@ export default router;
 ## 앞으로
 
 권한에 대한 api 고민이 있습니다. 어떻게 해결할지 고민이네요.
-더 좋은 의견이 있으면 알려주세요. 제 미숙한 코드를 보시고 아름답게 고쳐서 사용하세요!
+
+
+## API 요청 예시
+
+Redux에 firebase 로그인을 통해서 회원 토큰을 저장합니다.
+데이터를 요청할 때 Headers의 Authorization에 토큰을 같이 보냅니다.
+
+```javascript
+// API actions
+function emailLogin(email, password) {
+  return dispatch => {
+    dispatch(loading());
+    firebase
+      .auth()
+      .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+      .then(() => {
+        firebase
+          .auth()
+          .signInWithEmailAndPassword(email, password)
+          .then(() => {
+            firebase
+              .auth()
+              .currentUser.getIdToken(true)
+              .then(idToken => {
+                dispatch(getUser(idToken));
+                dispatch(saveToken(idToken));
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          })
+          .catch(error => dispatch(authError(error)));
+      })
+      .catch(error => console.log(error));
+  };
+}
+
+function getData(params) {
+  return (dispatch, getState) => {
+    axios
+      .get(api.baseURL("/data/"), {
+        headers: {
+          Authorization: getState().user.token
+        },
+        params
+      })
+      .then(response => {
+        dispatch(setCompanies(response.data));
+      })
+      .catch(error => {
+        api.handleError(error, () => {
+          dispatch(userActions.firebaseLogout());
+        });
+      });
+  };
+}
+```
