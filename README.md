@@ -134,9 +134,9 @@ export default { couponModel, couponLogModel };
 
 ```javascript
 import models from "../models";
-import { baseRouter } from "./js/base";
+import Router from "./router";
 
-const router = baseRouter(models.coupons.couponModel);
+const router = Router.baseRouter(models.coupons.couponModel);
 
 // custom
 router.get("/test/test", (req, res) => {
@@ -189,9 +189,9 @@ export default router;
 #### example
 ```javascript
 import models from "../models";
-import { baseRouter } from "./js/base";
+import Router from "./router";
 
-const router = baseRouter(models.coupons.couponModel);
+const router = Router.baseRouter(models.coupons.couponModel);
 
 router.get("/custom/:docId", async (req, res) => {
   const data = await models.coupons.couponModel.get(req.params.docId);

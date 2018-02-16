@@ -1,6 +1,6 @@
 import models from "../models";
-import { userRouter } from "./js/base";
+import Router from "./router";
 
-const router = userRouter(models.users.userModel);
+const router = Router.userRouter(models.users.userModel);
 
 export default router;
