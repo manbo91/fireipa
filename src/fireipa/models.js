@@ -319,4 +319,19 @@ class FireStoreTimestampModel extends FireStoreModel {
   }
 }
 
-export default { FireStoreModel, FireStoreDeepModel, FireStoreTimestampModel };
+class FireStoreTimestampDeepModel extends FireStoreTimestampModel {
+  constructor(collectionRef, deepRef, deepCollectionRef, documentType) {
+    super(collectionRef, documentType);
+
+    this.collectionRef = this.collectionRef
+      .doc(deepRef)
+      .collection(deepCollectionRef);
+  }
+}
+
+export default {
+  FireStoreModel,
+  FireStoreDeepModel,
+  FireStoreTimestampModel,
+  FireStoreTimestampDeepModel
+};
