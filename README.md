@@ -179,7 +179,7 @@ export default router;
 | add(data) | 랜덤한 Id를 통해 문서를 생성합니다. | docId |
 | update(docId, data) |  문서를 업데이트 합니다. | docId |
 | delete(docId) | 문서를 제거합니다. | docId |
-| get(docId) | 문서를 데이터를 가져옵니다. | Object |
+| get(docId) | 해당 문서 데이터를 가져옵니다. | Object |
 | getAll() | 컬렉션의 모든 문서를 가져옵니다. | Array |
 | getFilter(query) | 쿼리 내용과 일치하는 문서를 가져옵니다. (다중옵션 가능) | Array |
 | getSearch(query) | 쿼리 필드 내용으로 컬렉션의 문서를 검색합니다. | Array |
@@ -260,7 +260,7 @@ function getData(params) {
         params
       })
       .then(response => {
-        dispatch(setCompanies(response.data));
+        dispatch(setData(response.data));
       })
       .catch(error => {
         api.handleError(error, () => {

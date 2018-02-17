@@ -50,7 +50,7 @@ class FireStoreModel {
     };
   }
 
-  checkDocTypeData(data) {
+  checkDocTypeData(data, isUpdate) {
     return new Promise(resolve => {
       const checkDocTypeData = {};
       const documentLength = Object.keys(this.documentType).length;
@@ -67,7 +67,7 @@ class FireStoreModel {
           }
           // No data
           if (typeof data[typeName] === "undefined") {
-            if (typeName !== "createdAt" && typeName !== "updatedAt") {
+            if (!isUpdate && typeName !== "createdAt" && typeName !== "updatedAt") {
               checkDocTypeData[typeName] = null;
               nullLength += 1;
 
@@ -78,7 +78,7 @@ class FireStoreModel {
             // Check data
             if (data[typeName]) {
               checkDocTypeData[typeName] = data[typeName];
-            } else {
+            } else if (!isUpdate) {
               checkDocTypeData[typeName] = null;
               nullLength += 1;
             }
@@ -142,7 +142,7 @@ class FireStoreModel {
 
   update(docId, data) {
     return new Promise(async resolve => {
-      const result = await this.checkDocTypeData(data);
+      const result = await this.checkDocTypeData(data, true);
       if (this.updatedAt) {
         result.updatedAt = fireipa.admin.firestore.FieldValue.serverTimestamp();
       }
