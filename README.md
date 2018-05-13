@@ -2,14 +2,7 @@
 
 ### Node.js + Express + firebase + ES6 / API server
 
-파이어베이스와 Express.js를 이용한 간단한 API 서버 만들기!
-
-안녕하세요. 저는 2년전부터 프로그램을 독학하고 있는 비전공 프로그래머(?)입니다. 현재는 **React**와 API 서버를 이용한 서비스를 기획하고 있습니다.
-
-그래서 이번에 API 서버를 처음 만들어봤습니다. 반복적인 작업이 계속 생겨나더라구요. (GET, POST, PUT, DELETE에서...) 그래서 **Firebase** 데이터를 사용하는 방법을 생각해봤습니다. Nosql로 이루어진 실시간 데이터베이스나 Firestore를 이용하려면 관계형데이터베이스와는 다른 방식으로 데이터를 설계하고 API 또한 만들어야했습니다. 그래서 Firestore의 collection과 document 방식의 데이터베이스를 쉽게 활용할 방법을 찾았죠. 이미 Nosql 쿼리, 페이지화 등등을 지원해주기 때문에 데이터 모델 관리만 할 수 있다면 반복 작업이 많이 줄어들 것이라고 생각했습니다.
-
-Fireipa는 기본적인 api 기능들을 아주 빠르게 구현할 수 있습니다. (제 생각으로는.. 그렇습니다)
-
+파이어베이스와 Express.js를 이용한 API 서버 만들기
 
 # 시작하기
 
@@ -54,7 +47,6 @@ export default admin;
 
 마지막으로 firebase 콘솔의 Authentication를 이용해 관리자 계정으로 이용할 아이디를 하나 만들어줍니다. 위의 `export const adminId = "{관리자 계정 uid}";`를 입력해주세요.
 
-이제 모든 준비는 끝났습니다!
 
 ## 문서 모델 만들기 
 
@@ -116,7 +108,7 @@ const couponLogModel = docId =>
 export default { couponModel, couponLogModel };
 ```
 
-필요한 필드가 생기면 모델에 객체를 추가하면 되고 필요없는 필드가 생기면 삭제하면 끝입니다.  Model의 종류에는 
+필요한 필드가 생기면 모델에 객체를 추가하면 되고 필요없는 필드가 생기면 삭제합니다.  Model의 종류에는 
 
  - **FireStoreModel**: 기본적인 데이터 모델
  - **FireStoreTimestampModel**: 생성시간과 수정시간을 기록하는 모델
@@ -125,12 +117,11 @@ export default { couponModel, couponLogModel };
 
 이 있습니다.
 
-간단합니다! 
 > 문서모델을 만든 뒤에는 models/index.js 에 import, export 코드를 꼭 업데이트해주세요.
 
 ## baseRouter 활용하기
 
-기본적으로 express에서 router를 사용하는 것과 동일합니다. 하지만 귀찮은 일이 있죠. 데이터를 불러오고 수정하고 삭제하고...  기본적인 기능들 그래서 제가 만들었습니다. 기본라우터를 말이죠!
+기본적으로 express에서 router를 사용하는 것과 동일합니다.
 
 ```javascript
 import models from "../models";
@@ -146,9 +137,9 @@ router.get("/test/test", (req, res) => {
 export default router;
 ```
 
-이게 다입니다.  이제 쿠폰 문서 모델에 대한 GET, POST, PUT, DELETE가 작동합니다.
+이제 쿠폰 문서 모델에 대한 GET, POST, PUT, DELETE가 작동합니다.
 
-**baseRouter(model, apiPrivate: boolean):** 두 번째 argument로 true를 보내면 비공개 api를 만들 수 있습니다. 비공개 api는 기본적으로 모든문서 가져오기, 랜덤아이디로 문서 생성, 문서 검색이 되지 않습니다.  문서 id와 유저 id가 동일할 시에만 해당 문서 가져오기, 수정, 삭제가 가능한 api가 만들어집니다.
+**baseRouter(model, apiPrivate: boolean):** 두 번째 argument로 true를 보내면 비공개 api를 만들 수 있습니다. 비공개 api는 기본적으로 모든 문서 가져오기, 랜덤아이디로 문서 생성, 문서 검색이 되지 않습니다.  문서 id와 유저 id가 동일할 시에만 해당 문서 가져오기, 수정, 삭제가 가능한 api가 만들어집니다.
 > setup.js에 설정한 관리자 계정은 모든 비공개 api를 사용 가능합니다.
 
  - http://localhost:8080/coupons/
@@ -206,13 +197,6 @@ export default router;
 ```
 
 기본적인 모델 메서드 사용법입니다. 모든 메서드는 error가 발생하면 false를 반환합니다.
-
-이걸로 API 서버가 만들어졌네요!
-
-
-## 앞으로
-
-권한에 대한 api 고민이 있습니다. 어떻게 해결할지 고민이네요.
 
 
 ## API 요청 예시
